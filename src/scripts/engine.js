@@ -19,11 +19,11 @@ const state = {
 };
 
 const playerSides = {
-    player1: "player-field-card",
-    computer: "computer-field-card",
+    player1: "player-cards",
+    computer: "computer-cards",
 };
 
-const pathImages = ".src/assets/icons/";
+const pathImages = "./src/assets/icons/";
 
 const cardData = [
     {
@@ -49,32 +49,40 @@ const cardData = [
         img: `${pathImages}exodia.png`,
         WinOf: [0],
         LoseOf: [1],
-    }
+    },
 ];
 
 async function getRandomCardId() {
-    const randomIndex = Math.floor(Math.random() * cardData.length)
+    const randomIndex = Math.floor(Math.random() * cardData.length);
     return cardData[randomIndex].id;
 };
 
 async function createCardImage(IdCard, fieldSide) {
-    const cardImgage = document.createElement("img");
+    const cardImage = document.createElement("img");
     cardImage.setAttribute("height", "100px");
-    cardImage.setAttribute("src", ".src/assets/icons/card-back.png");
+    cardImage.setAttribute("src", "./src/assets/icons/card-back.png");
     cardImage.setAttribute("data-id", IdCard);
     cardImage.classList.add("card");
 
     if (fieldSide === playerSides.player1) {
+        cardImage.addEventListener("mouseover", () => {
+            drawSelectCard(IdCard);
+        });
+
         cardImage.addEventListener("click", () => {
             setCardsField(cardImage.getAttribute("data-id"));
         });
+
     }
 
-    cardImage.addEventListener("mouseover", () => {
-        drawSelectCard(IdCard);
-    });
 
     return cardImage;
+}
+
+async function drawSelectCard(index) {
+    state.cardSprites.avatar.src = cardData[index].img;
+    state.cardSprites.name.innerText = cardData[index].name;
+    state.cardSprites.type.innerText = "Attribute : " + cardData[index].type;
 }
 
 async function drawCards(cardNumbers, fieldSide) {
@@ -84,11 +92,11 @@ async function drawCards(cardNumbers, fieldSide) {
 
         document.getElementById(fieldSide).appendChild(cardImage);
     }
-}
+};
 
 function init() {
     drawCards(5, playerSides.player1);
     drawCards(5, playerSides.computer);
-}
+};
 
 init();
