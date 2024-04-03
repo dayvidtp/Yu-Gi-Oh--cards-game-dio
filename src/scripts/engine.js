@@ -145,11 +145,21 @@ async function drawCards(cardNumbers, fieldSide) {
 
         document.getElementById(fieldSide).appendChild(cardImage);
     }
-};
+}
+
+async function resetDuel() {
+    state.cardSprites.avatar.src = "";
+    state.actions.button.style.display = "none";
+
+    state.fieldCards.player.style.display = "none";
+    state.fieldCards.computer.style.display = "none";
+
+    init();
+}
 
 function init() {
     drawCards(5, playerSides.player1);
     drawCards(5, playerSides.computer);
-};
+}
 
 init();
